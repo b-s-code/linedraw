@@ -48,3 +48,8 @@ and then the image can be viewed with any program that can display ppm files, fo
 ![image](./examples/triangle/myimage.png)
 
 Alternatively, the PPM file can easily be converted to your preferred format with a tool like ImageMagick.
+
+### Other examples
+
+![image](./examples/arrows/arrows780.png)
+![image](./examples/arrows/arrows991.png)

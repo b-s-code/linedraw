@@ -45,6 +45,6 @@ cat mytriangle.txt | LineDraw > mytriangle.ppm
 
 and then the image can be viewed with any program that can display ppm files, for example `feh`.
 
-![image](../examples/triangle/myimage.png)
+![image](./examples/triangle/myimage.png)
 
 Alternatively, the PPM file can easily be converted to your preferred format with a tool like ImageMagick.

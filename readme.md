@@ -53,3 +53,4 @@ Alternatively, the PPM file can easily be converted to your preferred format wit
 
 ![image](./examples/arrows/arrows780.png)
 ![image](./examples/arrows/arrows991.png)
+![image](./examples/connected_graph/k_n.png)

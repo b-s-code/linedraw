@@ -6,74 +6,6 @@
 
 int main()
 {
-
-
-
-// //////////////// "TESTS" THAT ARE STILL FAILING //////////
-
-//     // PPMImage TestFile(600,800);
-//     // TestFile.AddPoint(60, 800); // still carks it w vector range exception at runtime
-
-
-// // PPMImage TestFile(6,8);
-// //     TestFile.AddLine(1,1,5,5); // ok but edges are strange
-//     // finding this issue hard to give a shit about tbh
-
-// /////////////////////////////////////////////////////////
-    
-// // something I have now considered:
-// // if the canvas size is 5px by 5px
-// // it actually doesn't make sense to accept both
-// // AddLine(0,0,3,3)    // currently works
-// // and
-// // AddLine(3,3,5,5)    // currently doesn't work
-// // at least one of these should be illegal
-// // because otherwise, unless part of some legal line segment gets cropped out,
-// // then the canvas would be 6px by 6xp (this is also an option but is less likeable).
-// // At the moment both run (}:~D)
-
-
-// // PPMImage TestFile(5,5);
-// // TestFile.AddLine(0,0,3,3);
-// // // and
-// // // TestFile.AddLine(3,3,5,5);
-
-
-
-
-// //     TestFile.PrintImage();
-
-
-
-
-
-
-
-
-
-//     // complete graph, order 5
-//     // it works now
-//     PPMImage TestFile(500,500);
-//     TestFile.AddLine(300,200,230,295);
-//     TestFile.AddLine(300,200,120,258);
-//     TestFile.AddLine(300,200,120,142);
-//     TestFile.AddLine(300,200,230,105);
-//     TestFile.AddLine(230,295,120,258);
-//     TestFile.AddLine(230,295,120,142);
-//     TestFile.AddLine(120,142,230,105);
-//     TestFile.AddLine(230,295,230,105);
-//     TestFile.AddLine(120,258,120,142);
-//     TestFile.AddLine(120,258,230,105);
-//     TestFile.PrintImage();
-
-
-
-
-////////// above = from before pipe experiment ///////////
-
-////////// below = from pipe experiment ///////////
-
-
     // parse piped input
     std::vector<std::vector<int>> parsedLines = {};
     while (std::cin.peek() != EOF)
@@ -84,7 +16,7 @@ int main()
         parsedLines.push_back(parsedLine);
     }
 
-// actually make a PPM image now
+    // actually make a PPM image now
     const int padding = 10; // pixels
 
     // determine required canvas dimensions from extreme x-values and y-values
@@ -153,4 +85,3 @@ int main()
 
     return 0;
 }
-

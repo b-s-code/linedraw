@@ -9,7 +9,6 @@ def rpoint():
     return (x, y)
 
 def rpertubation():
-    #x, y = rnum(-20, 20), rnum(-20, 20)
     x, y = rnum(-2, 2), rnum(-2, 2)
     return (x, y)
 
@@ -27,7 +26,6 @@ os.system("rm myimage.gif")
 for i in range(num_frames):
     for j, point in enumerate(points):
         xpert, ypert = rpertubation()
-        #points[j] = (point[0] + xpert, point[1] + ypert)
         candidatex = point[0] + xpert
         candidatey = point[1] + ypert
         newx = candidatex if candidatex in range(500) else point[0]
@@ -41,7 +39,6 @@ for i in range(num_frames):
             f.writelines(str(edge) + "\n")
     
     os.system("cat " + "frame_" + str(i) + "_edges" + " | ../../bin/LineDraw > " + "frame_" + str(i) + "_edges.ppm")
-    # os.system("feh " + "frame_" + str(i) + "_edges.ppm")
 
 os.system("mogrify -format gif *.ppm")
 os.system("convert -delay 5 -loop 0 *.gif myimage.gif")

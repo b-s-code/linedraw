@@ -95,33 +95,28 @@ void PPMImage::AddVertLine(int X1, int Y1, int X2, int Y2)
 }
 
 /*
- * Draws from left to right
- *
+ * See
+ * https://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm)
  * */
 void PPMImage::AddDiagonalLine(int X1, int Y1, int X2, int Y2)
 {
-	std::pair<int, int> lhsPoint = X1 < X2 ? std::make_pair(X1, Y1) : std::make_pair(X2, Y2);
-	std::pair<int, int> rhsPoint = X1 < X2 ? std::make_pair(X2, Y2) : std::make_pair(X1, Y1);
-   
-	std::cerr << lhsPoint.first << ',' << lhsPoint.second << std::endl;	
-	std::cerr << rhsPoint.first << ',' << rhsPoint.second << std::endl;	
+    std::pair<int, int> lhsPoint = X1 < X2 ? std::make_pair(X1, Y1) : std::make_pair(X2, Y2);
+    std::pair<int, int> rhsPoint = X1 < X2 ? std::make_pair(X2, Y2) : std::make_pair(X1, Y1);
     float dx = rhsPoint.first - lhsPoint.first;
     float dy = rhsPoint.second - lhsPoint.second;
-			
-	int step = abs(dx) > abs(dy) ?  abs(dx) : abs(dy);
-	dx /= step;
-	dy /= step;
-	float x = lhsPoint.first;
-	float y = lhsPoint.second;
-	int i = 1;
-	while (i <= step)
-	{
-            Image2DArray.at(ImageHeight - 1 - y).at(x) = LineColour;
-		x += dx;
-		y += dy;
-		i++;
-	}
-
+    int step = abs(dx) > abs(dy) ?  abs(dx) : abs(dy);
+    dx /= step;
+    dy /= step;
+    float x = lhsPoint.first;
+    float y = lhsPoint.second;
+    int i = 1;
+    while (i <= step)
+    {
+        Image2DArray.at(ImageHeight - 1 - y).at(x) = LineColour;
+        x += dx;
+        y += dy;
+        i++;
+    }
 }
 
 const float PPMImage::YGivenX(int X1, int Y1, int X2, int Y2, int X)

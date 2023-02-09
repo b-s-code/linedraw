@@ -1,7 +1,9 @@
 #include <iostream>
 #include <vector>
+#include <utility>
 #include "coordrships.h"
 #include "PPMImage.h"
+#include <iostream>
 
 PPMImage::PPMImage(int h, int w)
     : ImageHeight(h),
@@ -92,35 +94,34 @@ void PPMImage::AddVertLine(int X1, int Y1, int X2, int Y2)
     }
 }
 
+/*
+ * Draws from left to right
+ *
+ * */
 void PPMImage::AddDiagonalLine(int X1, int Y1, int X2, int Y2)
 {
-    int xMin = X1 < X2 ? X1 : X2;
-    int xMax = X1 < X2 ? X2 : X1;
-    int yMin = Y1 < Y2 ? Y1 : Y2;
-    int yMax = Y1 < Y2 ? Y2 : Y1;
-    
-    for (int i = xMin; i < xMax; i++)
-    {
-        for (int j = yMin; j < yMax; j++)
-        {
-            float HeightOfLine = YGivenX(X1, Y1, X2, Y2, i);
-            
-            // // makes steeper lines look dotted (undesirable)
-            // if (std::abs(j - HeightOfLine) < 1.0) 
-            
-            // doesn't look as bad
-            if (std::abs(j - HeightOfLine) < abs((Y2 - Y1) / (X2 - X1)) + 1)
-            {
-                Image2DArray.at(ImageHeight - 1 - j).at(i) = LineColour;
-            }
+	std::pair<int, int> lhsPoint = X1 < X2 ? std::make_pair(X1, Y1) : std::make_pair(X2, Y2);
+	std::pair<int, int> rhsPoint = X1 < X2 ? std::make_pair(X2, Y2) : std::make_pair(X1, Y1);
+   
+	std::cerr << lhsPoint.first << ',' << lhsPoint.second << std::endl;	
+	std::cerr << rhsPoint.first << ',' << rhsPoint.second << std::endl;	
+    float dx = rhsPoint.first - lhsPoint.first;
+    float dy = rhsPoint.second - lhsPoint.second;
+			
+	int step = abs(dx) > abs(dy) ?  abs(dx) : abs(dy);
+	dx /= step;
+	dy /= step;
+	float x = lhsPoint.first;
+	float y = lhsPoint.second;
+	int i = 1;
+	while (i <= step)
+	{
+            Image2DArray.at(ImageHeight - 1 - y).at(x) = LineColour;
+		x += dx;
+		y += dy;
+		i++;
+	}
 
-            // Obviously Euclidean distance could be used to make all diagonal
-            // lines have more consistent thickness. That would require 
-            // re-thinking the whole algorithm for diagonal lines though.  It
-            // would be nice to do something smarter.  But for current purposes,
-            // this algorithm is good enough (visually).
-        }
-    }
 }
 
 const float PPMImage::YGivenX(int X1, int Y1, int X2, int Y2, int X)

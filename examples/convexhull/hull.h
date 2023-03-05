@@ -1,10 +1,12 @@
 #include <iostream>
+#include <cmath>
 #include <vector>
 #include <utility>
 
 namespace Hull
 {
     using Point = std::pair<int, int>;
+    using Vec2 = std::pair<int, int>;
     
     class Edge
     {
@@ -38,18 +40,51 @@ namespace Hull
         return os;
     }
 
+    /*
+    * returns whether r is to the lhs of pq
+    * modulo computation errors
+    */
+    bool IsOnLHS(Point r, Point p, Point q)
+    {
+        int rx = r.first, ry = r.second,
+            px = p.first, py = p.second,
+            qx = q.first, qy = q.second;
+    
+        // use 2D cross-product
+        return ((qx - px)*(ry - py) - (qy - py)*(rx - px)) > 0;
+    }
+
     std::vector<Edge> GetConvexHull(std::vector<Point> points)
     {
-        /* bad, bad dummy functionality
-            not a correct algorithm
-            obviously makes test fail
-            todo: actually implement a convex hull algo */
         std::vector<Edge> edges;
-        for (auto p : points)
+        for (size_t i = 0; i < points.size(); i++)
         {
-            for (auto q : points)
+            for (size_t j = 0; j < points.size(); j++) // we must test, for example, both line AB and line BA
             {
-                edges.push_back(Edge(p, q));
+                Point p = points.at(i), q = points.at(j);
+                if (p.first == q.first && p.second == q.second)
+                {
+                    continue;
+                }
+                
+                bool shouldIncludeEdge = true; // will try to falsify
+                for (Point r : points)
+                {
+                    if (r == p || r == q)
+                    {
+                        continue;
+                    }
+                    else if (IsOnLHS(r, p, q))
+                    {
+                        shouldIncludeEdge = false;
+                        break;
+                    }
+                }
+
+                if (shouldIncludeEdge)
+                {
+                    edges.push_back(Edge(p, q));
+                }
             }
         }
         return edges;

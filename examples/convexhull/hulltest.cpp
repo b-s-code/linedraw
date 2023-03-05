@@ -22,12 +22,13 @@ bool TestGetConvexHull_Basic()
     Hull::Point s (100, 50); // just this point is interior to the hull
     
     std::vector<Hull::Point> points {p, q, r, s};
+
     std::vector<Hull::Edge> edges = Hull::GetConvexHull(points);
     
     std::vector<Hull::Edge> expected {
                                          Hull::Edge(p, q),
                                          Hull::Edge(q, r),
-                                         Hull::Edge(r, s)
+                                         Hull::Edge(p, r)
                                      };
     bool testPass = EdgeSetsMatch(edges, expected);
     return testPass;

@@ -3,6 +3,8 @@
 #include <string>
 #include "PPMImage.h"
 #include "EdgeParser.h"
+    
+std::vector<int> getBounds(std::vector<std::vector<int>> parsedLines);
 
 int main()
 {
@@ -20,6 +22,32 @@ int main()
     const int padding = 10; // pixels
 
     // determine required canvas dimensions from extreme x-values and y-values
+    std::vector<int> canvasBounds = getBounds(parsedLines);
+    int Xmin = canvasBounds.at(0), Xmax = canvasBounds.at(1),
+        Ymin = canvasBounds.at(2), Ymax = canvasBounds.at(3);
+
+    // translation to shift all points to the quadrant 1 of the 2D plane
+    int translationX = -Xmin + padding;
+    int translationY = -Ymin + padding;
+
+    int canvasWidth = Xmax - Xmin + 2 * padding;
+    int canvasHeight = Ymax - Ymin + 2* padding;
+    PPMImage myImage(canvasHeight, canvasWidth);
+    for (auto edge: parsedLines)
+    {
+        int X1 = edge.at(0) + translationX;
+        int Y1 = edge.at(1) + translationY;
+        int X2 = edge.at(2) + translationX;
+        int Y2 = edge.at(3) + translationY;
+        myImage.AddLine(X1, Y1, X2, Y2);
+    }
+    myImage.PrintImage();
+
+    return 0;
+}
+    
+std::vector<int> getBounds(std::vector<std::vector<int>> parsedLines)
+{
     int Xmin = parsedLines.at(0).at(0);
     int Ymin = parsedLines.at(0).at(1);
     int Xmax = parsedLines.at(0).at(2);
@@ -63,25 +91,6 @@ int main()
             Ymax = Y2;
         }
     }
-
-    int canvasWidth = Xmax - Xmin + 2 * padding;
-    int canvasHeight = Ymax - Ymin + 2* padding;
-
-    // translation to shift all points to the quadrant 1 of the 2D plane
-    int translationX = -Xmin + padding;
-    int translationY = -Ymin + padding;
-
-    PPMImage myImage(canvasHeight, canvasWidth);
-    for (auto edge: parsedLines)
-    {
-        int X1 = edge.at(0) + translationX;
-        int Y1 = edge.at(1) + translationY;
-        int X2 = edge.at(2) + translationX;
-        int Y2 = edge.at(3) + translationY;
-        myImage.AddLine(X1, Y1, X2, Y2);
-    }
-    myImage.PrintImage();
-
-
-    return 0;
+    std::vector<int> result = {Xmin, Xmax, Ymin, Ymax};
+    return result;
 }
